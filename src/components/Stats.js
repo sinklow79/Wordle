@@ -1,4 +1,4 @@
-import React, {useRef} from "react";
+import React from "react";
 import { memo } from "react";
 import styled from "styled-components";
 
@@ -9,9 +9,9 @@ const Stats = memo(({
   playerStats
 }) => {
   const widthCalculator = (win, totalWin) => {
-    if (!totalWin || !win) return 7;
+    if (!totalWin || !win) return 0;
     const res = Math.floor(win * 100 / totalWin);
-    return res <= 7 ? 7 : res;
+    return res;
   }
 
   const width1 = widthCalculator(playerStats.wonRow[0], playerStats.won);
@@ -49,9 +49,9 @@ const Stats = memo(({
               <span>1</span>
               <span
                 style={{
-                  width: width1+"%",
+                  width: width1 <= 7 ? "7%" : width1+"%",
                   justifyContent: `${
-                    widthCalculator(playerStats.wonRow[0], playerStats.won) === 7
+                    widthCalculator(playerStats.wonRow[0], playerStats.won) <= 7
                       ? "center"
                       : "flex-end"
                   }`,
@@ -64,9 +64,9 @@ const Stats = memo(({
               <span>2</span>
               <span
                style={{
-                width: width2+"%",
+                width: width2 <=7 ? "7%" : width2+"%",
                 justifyContent: `${
-                  widthCalculator(playerStats.wonRow[1], playerStats.won) === 7
+                  widthCalculator(playerStats.wonRow[1], playerStats.won) <= 7
                     ? "center"
                     : "flex-end"
                 }`,
@@ -79,9 +79,9 @@ const Stats = memo(({
               <span>3</span>
               <span
                style={{
-                width: width3+"%",
+                width: width3 <= 7 ? "7%" : width3+"%",
                 justifyContent: 
-                  widthCalculator(playerStats.wonRow[2], playerStats.won) === 7
+                  widthCalculator(playerStats.wonRow[2], playerStats.won) <= 7
                     ? "center"
                     : "flex-end",
               }}
@@ -93,9 +93,9 @@ const Stats = memo(({
               <span>4</span>
               <span
                 style={{
-                  width: width4+"%",
+                  width: width4 <= 7 ? "7%" : width4+"%",
                   justifyContent: `${
-                    widthCalculator(playerStats.wonRow[3], playerStats.won) === 7
+                    widthCalculator(playerStats.wonRow[3], playerStats.won) <= 7
                       ? "center"
                       : "flex-end"
                   }`,
@@ -108,9 +108,9 @@ const Stats = memo(({
               <span>5</span>
               <span
                 style={{
-                  width: width5+"%",
+                  width: width5 <= 7 ? "7%" : width5+"%",
                   justifyContent: `${
-                    widthCalculator(playerStats.wonRow[4], playerStats.won) === 7
+                    widthCalculator(playerStats.wonRow[4], playerStats.won) <= 7
                       ? "center"
                       : "flex-end"
                   }`,
@@ -123,9 +123,9 @@ const Stats = memo(({
               <span>6</span>
               <span
                 style={{
-                  width: width6+"%",
+                  width: width6 <= 7 ? "7%" : width6+"%",
                   justifyContent: 
-                    widthCalculator(playerStats.wonRow[5], playerStats.won) === 7
+                    widthCalculator(playerStats.wonRow[5], playerStats.won) <= 7
                       ? "center"
                       : "flex-end"
                 }}
