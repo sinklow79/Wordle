@@ -5,6 +5,7 @@ import { generateWordSet } from "./words";
 import Navbar from "./Navbar";
 import styled from "styled-components";
 import Stats from "./Stats";
+import HowTo from "./HowTo";
 
 const initialState = {
   board: new Array(6).fill([]).map(() => new Array(5).fill("")),
@@ -42,7 +43,7 @@ function reducer(state, action) {
         ...initialState,
         board: new Array(6).fill([]).map(() => new Array(5).fill("")),
       };
-    default :
+    default:
       throw new Error();
   }
 }
@@ -66,8 +67,16 @@ const Game = () => {
   const [openStats, setOpenStats] = useState({
     clicked: false,
     show: false,
-    count: 0
+    count: 0,
   });
+
+  const [usedLetters, setUsedLetters] = useState({
+    correct: new Set(),
+    present: new Set(),
+    absent: new Set(),
+  });
+
+  const [openHowTo, setOpenHowTo] = useState(true);
 
   const handleKeyboardClick = (val) => {
     if (gameStatus.over) return;
@@ -84,6 +93,23 @@ const Game = () => {
     const writtenWord = board[pos.row].join("").toLowerCase();
     if (wordSet.has(writtenWord)) {
       dispatch({ type: "enter" });
+      let newCorrect = new Set(usedLetters.correct);
+      let newPresent = new Set(usedLetters.present);
+      let newAbsent = new Set(usedLetters.absent);
+      for (let i = 0; i < 5; i++) {
+        if (writtenWord[i] === word[i]) {
+          newCorrect.add(writtenWord[i].toUpperCase());
+        } else if (word.includes(writtenWord[i])) {
+          newPresent.add(writtenWord[i].toUpperCase());
+        } else {
+          newAbsent.add(writtenWord[i].toUpperCase());
+        }
+      }
+      setUsedLetters({
+        correct: newCorrect,
+        present: newPresent,
+        absent: newAbsent,
+      });
       if (writtenWord === word) {
         setgameStatus({
           win: true,
@@ -176,17 +202,16 @@ const Game = () => {
         setOpenStats({
           clicked: true,
           show: true,
-          count: 1
-        })
+          count: 1,
+        });
       }, 2800);
     }
     return () => clearInterval(statsInterval);
-  }, [gameStatus.over, openStats.count])
+  }, [gameStatus.over, openStats.count]);
 
   const handleStatsClick = () => {
-    setOpenStats({...openStats, clicked: true, show: !openStats.show});
+    setOpenStats({ ...openStats, clicked: true, show: !openStats.show });
   };
-
   const reset = useCallback(() => {
     dispatch({ type: "reset" });
     setExistence(null);
@@ -195,28 +220,41 @@ const Game = () => {
       won: false,
       over: false,
     });
-        setOpenStats({
-          clicked: true,
-          show: false,
-          count: 0
-        });
+    setOpenStats({
+      clicked: true,
+      show: false,
+      count: 0,
+    });
+    setUsedLetters({
+      correct: new Set(),
+      present: new Set(),
+      absent: new Set(),
+    });
   }, [dispatch]);
+
+  const handleHowToClick = () => setOpenHowTo(!openHowTo);
+  console.log(word);
 
   return (
     <>
-        <Stats handleStatsClick={handleStatsClick} openStats={openStats} reset={reset} playerStats={playerStats} />
-      <Navbar handleStatsClick={handleStatsClick}  />
+      <HowTo handleClick={handleHowToClick} open={openHowTo} />
+      <Stats
+        handleStatsClick={handleStatsClick}
+        openStats={openStats}
+        reset={reset}
+        playerStats={playerStats}
+      />
+      <Navbar
+        handleStatsClick={handleStatsClick}
+        handleHowToClick={handleHowToClick}
+      />
       <GameContainer>
         {existence && (
           <div className="absolute top-[5px] z-[900] left-1/2 -translate-x-1/2 px-[18px] py-[10px] bg-white rounded-md text-black">
             not in word list
           </div>
         )}
-        {gameStatus.win && (
-          <GameWin>
-            Congratulations, you won!
-          </GameWin>
-        )}
+        {gameStatus.win && <GameWin>Congratulations, you won!</GameWin>}
         {gameStatus.over && !gameStatus.win && (
           <div className="absolute z-[900] top-[5px] left-1/2 -translate-x-1/2 px-[18px] py-[10px] bg-[#3a3a3c] rounded-md font-extrabold text-[14px] tracking-[1px]">
             {word.toUpperCase()}
@@ -234,6 +272,7 @@ const Game = () => {
           handleKeyboardClick={handleKeyboardClick}
           handleEnterClick={handleEnterClick}
           handleDeleteClick={handleDeleteClick}
+          usedLetters={usedLetters}
         />
       </GameContainer>
     </>
@@ -241,17 +280,17 @@ const Game = () => {
 };
 
 const GameContainer = styled.div`
-    max-width: 500px;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    justify-items: center;
-    align-content: space-between;
-    margin: 0 auto;
-    height: calc(100% - 65px);
-    padding: 0 16px;
-`
+  max-width: 500px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  justify-items: center;
+  align-content: space-between;
+  margin: 0 auto;
+  height: calc(100% - 65px);
+  padding: 0 16px;
+`;
 
 const GameWin = styled.div`
   position: absolute;
@@ -260,7 +299,7 @@ const GameWin = styled.div`
   transform: translateX(-50%);
   padding: 10px 18px;
   background-color: #538d4e;
-  border-radius: .375rem;
+  border-radius: 0.375rem;
   z-index: 900;
   animation: appear 400ms ease 1600ms forwards;
   @keyframes appear {
@@ -268,8 +307,6 @@ const GameWin = styled.div`
       top: 5px;
     }
   }
-`
-
-
+`;
 
 export default Game;

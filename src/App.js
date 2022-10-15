@@ -1,6 +1,5 @@
 import './dist/output.css'
 import Game from './components/Game';
-import Navbar from './components/Navbar';
 import './App.css';
 
 function App() {

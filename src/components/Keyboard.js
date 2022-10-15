@@ -6,6 +6,7 @@ const Keyboard = ({
   handleKeyboardClick,
   handleEnterClick,
   handleDeleteClick,
+  usedLetters
 }) => {
   const keyboardSetup = [
     ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"],
@@ -26,7 +27,7 @@ const Keyboard = ({
   useEffect(() => {
     document.addEventListener("keydown", handleKeydown);
     return () => document.removeEventListener("keydown", handleKeydown);
-  });
+  }, [handleKeydown]);
 
   return (
     <KeyboardContainer>
@@ -39,6 +40,7 @@ const Keyboard = ({
               handleDeleteClick={handleDeleteClick}
               key={val}
               val={val}
+              usedLetters={usedLetters}
             />
           ))}
         </KeyboardRow>

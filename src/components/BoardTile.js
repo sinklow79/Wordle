@@ -4,18 +4,10 @@ import styled, { keyframes, css } from "styled-components";
 const BoardTile = memo(({ bgColor, val, col, rot }) => {
   const renderCounter = useRef(0);
   renderCounter.current++;
-//   console.log(val + " ~ " + renderCounter.current);
+  //   console.log(val + " ~ " + renderCounter.current);
   return (
-    <Tile
-      col={col}
-      rot={rot}
-      bgColor={bgColor}
-      val={val}
-    >
-      <Letter
-        col={col}
-        rot={rot}
-      >
+    <Tile col={col} rot={rot} bgColor={bgColor} val={val}>
+      <Letter col={col} rot={rot}>
         {val}
       </Letter>
     </Tile>
@@ -23,18 +15,14 @@ const BoardTile = memo(({ bgColor, val, col, rot }) => {
 });
 
 const Letter = styled.div`
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
   animation: ${(props) =>
     props.rot && `rot 400ms ${props.col * 400 + "ms"} linear forwards`};
   @keyframes rot {
     from {
-      transform: translate(-50%, -50%) rotateX(0);
+      transform: rotateX(0);
     }
     to {
-      transform: translate(-50%, -50%) rotateX(-180deg);
+      transform: rotateX(-180deg);
     }
   }
 `;
@@ -59,19 +47,20 @@ const scale = keyframes`
     100% {
         transform: scale(1);
     }
-`
+`;
 
-const bgAnimation = props => css`
-    animation: flip 400ms ${props.col * 400}ms linear forwards, ${bg(props.bgColor)} 400ms ${props.col * 400}ms linear forwards;
-`
+const bgAnimation = (props) => css`
+  animation: flip 400ms ${props.col * 400}ms linear forwards,
+    ${bg(props.bgColor)} 400ms ${props.col * 400}ms linear forwards;
+`;
 
 const scaleAnimation = () => css`
-    animation: ${scale} 250ms ease forwards;
-`
+  animation: ${scale} 250ms ease forwards;
+`;
 
 const Tile = styled.div`
-    ${props => props.val && scaleAnimation}
-  ${props => props.rot && bgAnimation(props)};
+  ${(props) => props.val && scaleAnimation}
+  ${(props) => props.rot && bgAnimation(props)};
   @keyframes flip {
     from {
       transform: rotateX(0deg);
@@ -80,15 +69,18 @@ const Tile = styled.div`
       transform: rotateX(180deg);
     }
   }
-  flex-grow: 1;
-  width: 100%;
-  max-width: 62px;
-  height: 0;
-  padding-bottom: 100%;
-  position: relative;
-  border: 1px solid rgba(255, 255, 255, .55);
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  vertical-align: middle;
+  border: 1px solid rgba(255, 255, 255, 0.55);
   font-size: 32px;
   font-weight: 700;
+  &::before {
+    content: "";
+    display: inline-block;
+    padding-bottom: 100%;
+  }
 `;
 
 export default BoardTile;

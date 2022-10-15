@@ -2,17 +2,12 @@ import React from "react";
 import { memo } from "react";
 import styled from "styled-components";
 
-const Stats = memo(({
-  openStats,
-  handleStatsClick,
-  reset,
-  playerStats
-}) => {
+const Stats = memo(({ openStats, handleStatsClick, reset, playerStats }) => {
   const widthCalculator = (win, totalWin) => {
     if (!totalWin || !win) return 0;
-    const res = Math.floor(win * 100 / totalWin);
+    const res = Math.floor((win * 100) / totalWin);
     return res;
-  }
+  };
 
   const width1 = widthCalculator(playerStats.wonRow[0], playerStats.won);
   const width2 = widthCalculator(playerStats.wonRow[1], playerStats.won);
@@ -49,7 +44,7 @@ const Stats = memo(({
               <span>1</span>
               <span
                 style={{
-                  width: width1 <= 7 ? "7%" : width1+"%",
+                  width: width1 <= 7 ? "7%" : width1 + "%",
                   justifyContent: `${
                     widthCalculator(playerStats.wonRow[0], playerStats.won) <= 7
                       ? "center"
@@ -63,14 +58,14 @@ const Stats = memo(({
             <GDGraphContainer>
               <span>2</span>
               <span
-               style={{
-                width: width2 <=7 ? "7%" : width2+"%",
-                justifyContent: `${
-                  widthCalculator(playerStats.wonRow[1], playerStats.won) <= 7
-                    ? "center"
-                    : "flex-end"
-                }`,
-              }}
+                style={{
+                  width: width2 <= 7 ? "7%" : width2 + "%",
+                  justifyContent: `${
+                    widthCalculator(playerStats.wonRow[1], playerStats.won) <= 7
+                      ? "center"
+                      : "flex-end"
+                  }`,
+                }}
               >
                 {playerStats.wonRow[1]}
               </span>
@@ -78,13 +73,13 @@ const Stats = memo(({
             <GDGraphContainer>
               <span>3</span>
               <span
-               style={{
-                width: width3 <= 7 ? "7%" : width3+"%",
-                justifyContent: 
-                  widthCalculator(playerStats.wonRow[2], playerStats.won) <= 7
-                    ? "center"
-                    : "flex-end",
-              }}
+                style={{
+                  width: width3 <= 7 ? "7%" : width3 + "%",
+                  justifyContent:
+                    widthCalculator(playerStats.wonRow[2], playerStats.won) <= 7
+                      ? "center"
+                      : "flex-end",
+                }}
               >
                 {playerStats.wonRow[2]}
               </span>
@@ -93,7 +88,7 @@ const Stats = memo(({
               <span>4</span>
               <span
                 style={{
-                  width: width4 <= 7 ? "7%" : width4+"%",
+                  width: width4 <= 7 ? "7%" : width4 + "%",
                   justifyContent: `${
                     widthCalculator(playerStats.wonRow[3], playerStats.won) <= 7
                       ? "center"
@@ -108,7 +103,7 @@ const Stats = memo(({
               <span>5</span>
               <span
                 style={{
-                  width: width5 <= 7 ? "7%" : width5+"%",
+                  width: width5 <= 7 ? "7%" : width5 + "%",
                   justifyContent: `${
                     widthCalculator(playerStats.wonRow[4], playerStats.won) <= 7
                       ? "center"
@@ -123,22 +118,18 @@ const Stats = memo(({
               <span>6</span>
               <span
                 style={{
-                  width: width6 <= 7 ? "7%" : width6+"%",
-                  justifyContent: 
+                  width: width6 <= 7 ? "7%" : width6 + "%",
+                  justifyContent:
                     widthCalculator(playerStats.wonRow[5], playerStats.won) <= 7
                       ? "center"
-                      : "flex-end"
+                      : "flex-end",
                 }}
               >
                 {playerStats.wonRow[5]}
               </span>
             </GDGraphContainer>
           </GuessDistributionContainer>
-          <Button
-            onClick={() => reset()}
-          >
-            Play again
-          </Button>
+          <Button onClick={() => reset()}>Play again</Button>
         </StatsSSContainer>
       </SectionContainer>
     </Section>
@@ -147,14 +138,18 @@ const Stats = memo(({
 
 const Section = styled.div`
   position: fixed;
-  top: -100%;
+  top: -130%;
   left: 0;
   width: 100%;
   height: 100vh;
   z-index: 999;
 
   animation: ${(props) =>
-      props.openStats.clicked ? props.openStats.show ? "onEnter 300ms ease forwards" : "onExit 300ms ease forwards" : ""};
+    props.openStats.clicked
+      ? props.openStats.show
+        ? "onEnter 300ms ease forwards"
+        : "onExit 300ms ease forwards"
+      : ""};
 
   @keyframes onEnter {
     to {
@@ -166,7 +161,7 @@ const Section = styled.div`
       top: 0;
     }
     to {
-      top: -100%;
+      top: -130%;
     }
   }
 `;
@@ -192,6 +187,7 @@ const SectionContainer = styled.div`
   max-width: 450px;
   padding: 2.5rem;
   z-index: 1001;
+  border-radius: 8px;
 `;
 //text-center text-[14.5px] font-bold
 const StatsSSContainer = styled.div`
